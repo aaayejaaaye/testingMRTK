@@ -6,43 +6,42 @@ using UnityEngine.UI;
 public class HUDController : MonoBehaviour
 {       //Treat rounds like questions/procedures and answers as steps there are so skip round data
     private TaskManager taskManager;//holds procedure list "dataController"
-    private Procedure currentProcedure;//Procedure class in task manager.cs for now
+    private TaskData currentProcedure;//Procedure class in task manager.cs for now
     private Procedure[] procedurePool;//
     public Transform stepListParent;
     private bool proceduresActive; //are there still procedures todo?
    //maybe call stepindex
-    private int ProcedureIndex; //wihch procedure are we on
+    private int procedureIndex; //wihch procedure are we on
 
     private List<GameObject> stepsGameObjects = new List<GameObject>();
     public StepObjectPool stepPoolObject;
 
-    public Text stepText;
+    public Text procedureText;
     public Text stepDisplayText;
     // Start is called before the first frame update
     void Start()
     {
         taskManager = FindObjectOfType<TaskManager>();
         currentProcedure = taskManager.GetCurrentProcedure();
-        procedurePool = currentProcedure.stepList;
-        
+        procedurePool = currentProcedure.allTask;
+
+        ShowProcedure();
         proceduresActive = true;
     }
 
     private void ShowProcedure()
     {
         RemovePreviousProcedureSteps();
-        step stepData = stepPool[ProcedureIndex];
-        stepDisplayText.text = stepData.stepText;
-/**
-        for (int i = 0; i < questionData.answers.Length; i++)
+        Procedure procedureData = procedurePool[procedureIndex];
+        procedureText.text = procedureData.procedure;
+        for(int i =0; i < procedureData.stepList.Length; i++)
         {
-            GameObjects stepGameObject = stepObjectPool.GetObject();
-            stepsGameObjects.Add(stepGameObject);
-            stepGameObject.transform.SetParent(stepListParent);
-            StepText stepsText = stepGameObject.GetComponent<stepsGameObjects>();
-            stepsText.Setup(stepData.steps[i]);
-        }*/
-        
+            GameObject stepPoolObjectObject = stepPoolObject.GetObject();
+            stepPoolObjectObject.transform.SetParent(stepListParent);
+            stepsGameObjects.Add(stepPoolObjectObject);
+            StepText steptext = stepPoolObjectObject.GetComponent<StepText>();
+            steptext.Setup(procedureData.stepList[i]);
+        }
     }
 
     private void RemovePreviousProcedureSteps()

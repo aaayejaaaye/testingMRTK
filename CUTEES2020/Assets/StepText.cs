@@ -8,9 +8,9 @@ public class StepText : MonoBehaviour
     
 
         public Text stepText;
-        private step stepData;
+        private Step stepData;
 
-        public void Setup(step data)
+        public void Setup(Step data)
         {
             stepData = data;
             stepText.text = stepData.stepText;
